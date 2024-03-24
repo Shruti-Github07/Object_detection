@@ -4,11 +4,13 @@ import cv2
 import os
 
 UPLOAD_FOLDER = 'uploads'
+UPLOAD_FOLDER2 = 'static'
 ALLOWED_EXTENSIONS = {'png', 'webp', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
 app.secret_key = 'super secret key'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER2'] = UPLOAD_FOLDER2
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -34,7 +36,7 @@ def processImage(filename):
         
         # Save the processed image with a new filename
         processed_filename = f"processed_{filename}"
-        cv2.imwrite(os.path.join(app.config['UPLOAD_FOLDER'], processed_filename), img_rgb)
+        cv2.imwrite(os.path.join(app.config['UPLOAD_FOLDER2'], processed_filename), img_rgb)
         
         return processed_filename  # Return the filename of the processed image
 
@@ -60,8 +62,7 @@ def edit():
             flash('No file part')
             return "error"
         file = request.files['file']
-        # If the user does not select a file, the browser submits an
-        # empty file without a filename.
+        # If the user does not select a file, the browser submits an empty file without a filename.
         if file.filename == '':
             flash('No selected file')
             return "error no selected file"
